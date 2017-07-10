@@ -1,0 +1,19 @@
+.center {
+  text-align: center;
+}
+
+#main  {
+  margin-top: 80px;
+}
+
+.bookName {
+  text-align: center;
+}
+
+.error {
+  color: #a94442;
+}
+
+.success {
+  color: #3c763d;
+}
