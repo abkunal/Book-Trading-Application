@@ -11,15 +11,20 @@ router.post("/", (req, res) => {
     });
   }
   else {
-    console.log(req.body.title, req.body.id, req.body.image);
-    console.log(req.body);
+    let url = '';
+    for (let prop in req.body) {
+      url = prop;
+    }
 
+    let idIndex = url.indexOf('id=');
+    let imageIndex = url.indexOf('image=');
     // get book data
-    let name = req.body.name;
-    let id = req.body.id;
-    let image = req.body.image;
+    let name = url.substring(5, idIndex-1);
+    let id = url.substring(idIndex+3, imageIndex-1);
+    let image = url.substring(imageIndex+6, url.length);
     let owner = req.user.name;
     let ownerEmail = req.user.email;
+    console.log(name, id, image);
 
     Book.getBookById(id, (err, book) => {
       if (err) throw err;

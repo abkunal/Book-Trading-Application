@@ -5,7 +5,8 @@ var BookSchema = mongoose.Schema({
   name: String,
   image: String,
   owner: String,
-  ownerEmail: String
+  ownerEmail: String,
+  shared: []
 });
 
 Book = module.exports = mongoose.model("Book", BookSchema);
@@ -16,4 +17,12 @@ module.exports.addBook = (newBook, callback) => {
 
 module.exports.getBookById = (id, callback) => {
   Book.findOne({id: id}, callback);
+}
+
+module.exports.getAllBooks = (callback) => {
+  Book.find().select({id: 1, name: 1, image: 1, ownerEmail: 1, shared: 1, _id: 0}).exec(callback);
+}
+
+module.exports.addSharedUser = (id, email, callback) => {
+  Book.update({id: id}, {$push: {shared: email}}, callback);
 }

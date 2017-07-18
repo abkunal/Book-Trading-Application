@@ -21,6 +21,7 @@ var settings = require("./routes/settings");
 var books = require("./routes/books");
 var addBook = require("./routes/addBook");
 var getBook = require("./routes/getBook");
+var trade = require("./routes/trade");
 
 // Init App
 var app = express();
@@ -79,20 +80,21 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Homepage
-app.use("/", index);
-app.use("/users", users);
-app.use("/settings", settings);
-app.use("/books", books);
-app.use("/add", addBook);
-app.use("/getBook", getBook);
+
+app.use("/", index);              // Homepage
+app.use("/users", users);         // signup and login
+app.use("/settings", settings);   // settings page
+app.use("/books", books);         // display books
+app.use("/add", addBook);         // add new books
+app.use("/getBook", getBook);     // return book information
+app.use("/trade", trade);         // make and accept trade requests
 
 // handle page not found
 app.use(function(req, res) {
   res.render("404");
 });
 
-app.set("port", 3000);
+app.set("port", process.env.PORT || 5000);
 
 app.listen(app.get("port"), function() {
     console.log("Server is running at port: ", app.get("port"));
