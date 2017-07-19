@@ -3,14 +3,16 @@ var router = express.Router();
 var Book = require("../models/book");
 var User = require("../models/user");
 
-
+// add a book to database
 router.post("/", (req, res) => {
+  // make sure user is logged in
   if (!req.user) {
     res.render("login", {
       error_msg: "You must log in to access this page"
     });
   }
   else {
+    // extract book information
     let url = '';
     for (let prop in req.body) {
       url = prop;
@@ -18,14 +20,12 @@ router.post("/", (req, res) => {
 
     let idIndex = url.indexOf('id=');
     let imageIndex = url.indexOf('image=');
-    // get book data
     let name = url.substring(5, idIndex-1);
     let id = url.substring(idIndex+3, imageIndex-1);
     let image = url.substring(imageIndex+6, url.length);
     let owner = req.user.name;
     let ownerEmail = req.user.email;
-    console.log(name, id, image);
-
+    
     Book.getBookById(id, (err, book) => {
       if (err) throw err;
 
@@ -57,10 +57,6 @@ router.post("/", (req, res) => {
         res.end("success");
       }
     });
-
-      
-
-
   }
 });
 

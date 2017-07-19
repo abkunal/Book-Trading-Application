@@ -11,6 +11,7 @@ var BookSchema = mongoose.Schema({
 
 Book = module.exports = mongoose.model("Book", BookSchema);
 
+// add a new book to the database
 module.exports.addBook = (newBook, callback) => {
   newBook.save(callback);
 }

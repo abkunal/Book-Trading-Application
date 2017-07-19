@@ -66,7 +66,6 @@ module.exports.changePassword = (email, newPass, callback) => {
   });
 }
 
-
 // get trade requests of the given user
 module.exports.getMyTradeRequests = (email, callback) => {
   User.find({email: email}).select({myTradeRequest: 1, _id: 0}).exec(callback);

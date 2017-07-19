@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require("../models/user");
 var Book = require("../models/book");
 
+// display all books
 router.get("/all", (req, res) => {
   // user not logged in
   if (!req.user) {
@@ -11,9 +12,9 @@ router.get("/all", (req, res) => {
     });
   }
   else {
+    // get all books from database and send to user
     Book.getAllBooks((err, books) => {
       if (err) throw err;
-      
       
       if (books) {
         res.render("allBooks", {
@@ -30,7 +31,7 @@ router.get("/all", (req, res) => {
   }
 });
 
-
+// display all books belonging to a user
 router.get("/my", (req, res) => {
   if (!req.user) {
     res.render("login", {
@@ -38,6 +39,7 @@ router.get("/my", (req, res) => {
     });
   }
   else {
+    // get all books of a particular user
     User.getUserByEmail(req.user.email, (err, user) => {
       if (err) throw err;
 
@@ -57,6 +59,7 @@ router.get("/my", (req, res) => {
   }
 });
 
+// display add book page
 router.get("/add", (req, res) => {
   if (!req.user) {
     res.render("login", {

@@ -4,6 +4,7 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local");
 var User = require("../models/user");
 
+// show signup page
 router.get("/signup", (req, res) => {
   // user not registered, show sign up page
   if (!req.user) {
@@ -15,6 +16,7 @@ router.get("/signup", (req, res) => {
   }
 });
 
+// show login page
 router.get("/login", (req, res) => {
   // user not logged in, show login page
   if (!req.user) {
@@ -25,7 +27,6 @@ router.get("/login", (req, res) => {
     res.redirect("/");
   }
 });
-
 
 // Register User
 router.post("/signup", function(req, res) {

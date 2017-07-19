@@ -44,7 +44,7 @@ router.post("/my", (req, res) => {
   }
 });
 
-
+// display all the trade requests created by a user
 router.get("/myRequests", (req, res) => {
   if (!req.user) {
     res.render("login", {
@@ -52,7 +52,6 @@ router.get("/myRequests", (req, res) => {
     });
   }
   else {
-    
     User.getMyTradeRequests(req.user.email, (err, user) => {
       if (err) throw err;
 
@@ -61,11 +60,16 @@ router.get("/myRequests", (req, res) => {
           user: user
         });
       }
+      else {
+        res.render("myRequests", {
+          user: []
+        });
+      }
     });
   }
 });
 
-
+// cancel a trade request
 router.post("/myRequests", (req, res) => {
   if (!req.user) {
     res.render("login", {
@@ -76,11 +80,13 @@ router.post("/myRequests", (req, res) => {
     let bookId = req.body.bookId;
     let issuerEmail = req.user.email;
 
+    // delete trade request of the current user
     User.deleteMyTradeRequest(bookId, issuerEmail, (err, msg) => {
       if (err) throw err;
       console.log(msg);
     });
 
+    // delete trade request send to other user
     Book.getBookById(bookId, (err, book) => {
       if (err) throw err;
 
@@ -96,7 +102,7 @@ router.post("/myRequests", (req, res) => {
   }
 });
 
-
+// display all trade requests send to a given user
 router.get("/otherRequests", (req, res) => {
   if (!req.user) {
     res.render("login", {
@@ -108,16 +114,20 @@ router.get("/otherRequests", (req, res) => {
       if (err) throw err;
 
       if (user) {
-        console.log(user);
-
         res.render("otherRequests", {
           user: user
+        });
+      }
+      else {
+        res.render("otherRequests", {
+          user: []
         });
       }
     });
   }
 });
 
+// accept trade request or cancel trade request
 router.post("/otherRequests", (req, res) => {
   if (!req.user) {
     res.render("login", {
@@ -161,6 +171,7 @@ router.post("/otherRequests", (req, res) => {
         console.log(msg)
       });
 
+      // delete trade request from current user's database
       User.deleteOtherTradeRequest(bookId, req.user.email, issuerEmail, (err, msg) => {
         if (err) throw err;
         console.log(msg);
